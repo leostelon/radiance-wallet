@@ -1,16 +1,17 @@
 import "../styles/Mnemonic.css";
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
-import { createMnemonic } from "../utils/wallet";
+import { useEffect, useRef, useState } from "react";
+import { createMnemonic, createWallet } from "../utils/wallet";
+import { BlueButton } from "../components/BlueButton.jsx";
 
 export const Mnemonic = () => {
 	const [mnemonic, setMnemonic] = useState([]);
-	let mnemon;
+	const mnemon = useRef();
 
 	function sM() {
 		const m = createMnemonic();
 		setMnemonic(m.split(" "));
-		mnemon = m;
+		mnemon.current = m;
 	}
 
 	useEffect(() => {
@@ -31,6 +32,15 @@ export const Mnemonic = () => {
 						</div>
 					))}
 				</div>
+			</Box>
+			<Box>
+				<BlueButton
+					onClick={async () => {
+						await createWallet(mnemon.current);
+						window.location.replace("#/");
+					}}
+					title={"Continue"}
+				/>
 			</Box>
 		</Box>
 	);

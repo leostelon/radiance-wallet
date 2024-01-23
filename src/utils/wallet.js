@@ -1,30 +1,27 @@
 const { ethers } = require("ethers");
 
-export async function createWallet() {
+export async function createWallet(mnemonic) {
 	const existingWallet = await getWallet();
-	if (existingWallet || existingWallet !== undefined || existingWallet !== "")
-		return;
+	if (
+		!existingWallet ||
+		existingWallet === undefined ||
+		existingWallet === ""
+	) {
+		// Create a wallet from the passphrase
+		const wallet = ethers.Wallet.fromPhrase(mnemonic);
 
-	// Replace 'your_passphrase' with your actual passphrase
-	const mnemonic = createMnemonic();
-
-	// Create a wallet from the passphrase
-	const wallet = ethers.Wallet.fromPhrase(mnemonic);
-
-	chrome.storage.local.get(["address"], function (res) {
-		if (!res.address) res.address = "no address";
-		setAddress(res.address);
-	});
-
-	// Display the wallet address
-	console.log("Wallet Address:", wallet.address);
+		chrome.storage.local.set({ address: wallet.address }, function () {
+			// Display the wallet address
+			console.log("Wallet Address:", wallet.address);
+		});
+	}
 }
 
 export async function getWallet() {
 	return new Promise((res, rej) => {
 		chrome.storage.local.get(["address"], (response) => {
-			if (!res.address) res.address = "";
-			res(res.address);
+			if (!response.address) response.address = "";
+			res(response.address);
 		});
 	});
 }
