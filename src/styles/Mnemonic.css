@@ -1,0 +1,22 @@
+.mnemonic-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 10px;
+	max-width: 300px;
+	margin: 16px auto;
+}
+
+.mnemonic-item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 48px;
+	background-color: #eeeeee;
+	font-weight: 500;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.mnemonic-item:hover {
+	background-color: #d5d5d5;
+}
