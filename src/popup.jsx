@@ -5,7 +5,11 @@ import App from "./App.jsx";
 const root = ReactDOM.createRoot(document.getElementById("react-target"));
 
 function Popup() {
-	return <div>hello</div>;
+	return (
+		<div>
+			<App />
+		</div>
+	);
 }
 
 root.render(<Popup />);
