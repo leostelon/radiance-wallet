@@ -12,6 +12,7 @@ export const Mnemonic = () => {
 		const m = createMnemonic();
 		setMnemonic(m.split(" "));
 		mnemon.current = m;
+		console.log(mnemon.current);
 	}
 
 	useEffect(() => {
@@ -33,7 +34,12 @@ export const Mnemonic = () => {
 					))}
 				</div>
 			</Box>
-			<Box>
+
+			<Box
+				sx={{
+					my: 2,
+				}}
+			>
 				<BlueButton
 					onClick={async () => {
 						await createWallet(mnemon.current);
@@ -41,6 +47,18 @@ export const Mnemonic = () => {
 					}}
 					title={"Continue"}
 				/>
+			</Box>
+			<Box
+				sx={{
+					color: "blue",
+					textAlign: "center",
+					cursor: "pointer",
+				}}
+				onClick={() => {
+					window.location.replace("#/frommnemonic");
+				}}
+			>
+				<small>Import Wallet?</small>
 			</Box>
 		</Box>
 	);

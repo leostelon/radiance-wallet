@@ -1,21 +1,21 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { User } from "./screens/User.jsx";
-import { createWallet } from "./utils/wallet.js";
 import { useEffect } from "react";
+import { Mnemonic } from "./screens/Mnemonic.jsx";
+import { FromMnemonic } from "./screens/FromMnemonic.jsx";
 
 function App() {
 	useEffect(() => {
-		createWallet();
 		return () => {};
 	}, []);
 
 	return (
-		<Router>
-			<Routes>
-				<Route path="/popup.html" exact element={<User />} />
-			</Routes>
-		</Router>
+		<Routes>
+			<Route path="/" exact element={<User />} />
+			<Route path="/mnemonic" exact element={<Mnemonic />} />
+			<Route path="/frommnemonic" exact element={<FromMnemonic />} />
+		</Routes>
 	);
 }
 
