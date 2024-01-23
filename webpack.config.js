@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = {
 	entry: {
@@ -18,10 +19,18 @@ module.exports = {
 				use: {
 					loader: "babel-loader",
 					options: {
-						presets: ["@babel/preset-env", "@babel/preset-react"],
+						presets: [
+							"@babel/preset-env",
+							["@babel/preset-react", { runtime: "automatic" }],
+						],
 					},
 				},
 			},
+			{
+				test: /\.(gif|svg|jpg|png)$/,
+				loader: "file-loader",
+			},
+			{ test: /\.css$/, use: ["style-loader", "css-loader"] },
 		],
 	},
 	plugins: [
@@ -31,6 +40,9 @@ module.exports = {
 		}),
 		new CopyPlugin({
 			patterns: [{ from: "public" }],
+		}),
+		new webpack.ProvidePlugin({
+			process: "process/browser",
 		}),
 	],
 };
