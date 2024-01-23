@@ -10,7 +10,9 @@ function Popup() {
 		<div
 			style={{
 				minHeight: "550px",
+				maxHeight: "550px",
 				minWidth: "300px",
+				maxWidth: "300px",
 			}}
 		>
 			<Router>
