@@ -2,6 +2,8 @@ import { Box, CircularProgress, Dialog } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
 import Web3 from "web3";
+import { getPrivateKey, getWallet } from "../utils/wallet";
+import { toast } from "react-toastify";
 
 export const PayDialog = ({ isOpen, handleExternalClose }) => {
 	const [open, setOpen] = useState(false);
@@ -24,20 +26,44 @@ export const PayDialog = ({ isOpen, handleExternalClose }) => {
 				"https://replicator-01.pegasus.lightlink.io/rpc/v1"
 			);
 
-			const from = localStorage.getItem("address");
+			const from = await getWallet();
 			const value = Web3.utils.toWei(amount, "ether");
-
-			// Gas Calculation
 			const gasPrice = await web3.eth.getGasPrice();
 
-			const res = await web3.eth.sendTransaction({
-				from,
-				to: address,
-				value,
-				gasPrice,
-			});
-			console.log("res here", res);
-			setPaymentLoading(false);
+			const PRIVATE_KEY = await getPrivateKey();
+			const nonce = await web3.eth.getTransactionCount(from);
+			web3.eth.accounts
+				.signTransaction(
+					{
+						from,
+						to: address,
+						value,
+						gas: "21000",
+						gasPrice,
+						nonce,
+						// maxPriorityFeePerGas: web3.utils.toWei("13", "wei"),
+						// maxFeePerGas: web3.utils.toWei("40", "wei"),
+					},
+					PRIVATE_KEY
+				)
+				.then(async (s) => {
+					web3.eth
+						.sendSignedTransaction(s.rawTransaction)
+						.on("receipt", (t) => {
+							console.log(t.transactionHash);
+							setPaymentLoading(false);
+							handleClose();
+							toast("Transaction completed.", { type: "success" });
+						})
+						.on("error", (error) => {
+							toast(error.message, { type: "error" });
+							setPaymentLoading(false);
+						});
+				})
+				.catch((e) => {
+					console.log("errored", e);
+					setPaymentLoading(false);
+				});
 		} catch (error) {
 			console.log(error.message);
 			setPaymentLoading(false);

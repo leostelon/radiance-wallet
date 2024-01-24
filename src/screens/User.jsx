@@ -10,7 +10,7 @@ import {
 import { PrimaryGrey } from "../constant.js";
 import { MdAdd, MdOutlineArrowOutward, MdSettings } from "react-icons/md";
 import { shortText } from "../utils/shortText.js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Web3 from "web3";
 // import { Notification } from "../components/Notification";
 import Userbg from "../assets/user-bg.png";
@@ -21,24 +21,20 @@ import { RecieveDialog } from "../components/Recieve.jsx";
 import { GoArrowDownLeft } from "react-icons/go";
 import { getWallet } from "../utils/wallet.js";
 import { getTransactionsByAccount } from "../api/blockscout.js";
-import { useNavigate } from "react-router";
 
 export const User = () => {
 	const [address, setAddress] = useState("");
 	const [balance, setBalance] = useState("0");
-	const [notification, setNotification] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [payOpen, setPayOpen] = useState(false);
 	const [recieveOpen, setRecieveOpen] = useState(false);
 	const [transactions, setTransactions] = useState([]);
-	const navigate = useNavigate();
 
 	async function getBalance(a) {
 		try {
 			const web3 = new Web3(
 				"https://replicator-01.pegasus.lightlink.io/rpc/v1"
 			);
-			console.log(a);
 			const b = await web3.eth.getBalance(a);
 			setBalance(Number(Web3.utils.fromWei(b, "ether")).toFixed(4));
 			gT(a);
@@ -48,9 +44,12 @@ export const User = () => {
 	}
 
 	function handleNotificationDialogClose() {
-		setNotification(false);
 		setRecieveOpen(false);
 		setPayOpen(false);
+		setTimeout(() => {
+			gT(address);
+			getBalance(address);
+		}, 1500);
 	}
 
 	async function gT(ad) {

@@ -66,6 +66,8 @@ export const CreatePassword = () => {
 					onClick={() => {
 						if (!password || password === "")
 							return toast("Please set a valid password", { type: "info" });
+						// Plain password is stored in chrome storage
+						// No hashing is performed, neither the wallet is password protected
 						chrome.storage.local.set({ password }, () => {
 							window.location.replace("#/user");
 						});
