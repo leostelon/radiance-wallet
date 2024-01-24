@@ -43,14 +43,16 @@ export const RevealSecret = () => {
 					open={open}
 					onClose={() => setOpen(false)}
 				>
-					<Box>
-						<MdFileCopy
-							style={{ marginRight: "4px" }}
-							onClick={() => {
-								navigator.clipboard.writeText(mnemon.current);
-								setOpen(true);
-							}}
-						/>
+					<Box
+						onClick={() => {
+							navigator.clipboard.writeText(mnemon.current);
+							setOpen(true);
+						}}
+						sx={{
+							cursor: "pointer",
+						}}
+					>
+						<MdFileCopy style={{ marginRight: "4px" }} />
 						<small>Copy</small>
 					</Box>
 				</Tooltip>

@@ -2,7 +2,7 @@ import { Box } from "@mui/system";
 import { PrimaryGrey } from "../constant.js";
 import { Avatar } from "@mui/material";
 import Logo from "../assets/logo.jpg";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BlueButton } from "../components/BlueButton.jsx";
 import { TitleNavbar } from "../components/TitleNavbar.jsx";
 import { toast } from "react-toastify";
@@ -10,10 +10,12 @@ import { getWallet } from "../utils/wallet.js";
 
 export const Password = () => {
 	const [password, setPassword] = useState("");
+	const passwordRef = useRef("")
+
 	async function unlockWallet() {
 		chrome.storage.local.get(["password"], (response) => {
 			if (!response.password) response.password = "";
-			if (password === response.password) {
+			if (passwordRef.current === response.password) {
 				window.location.replace("#/user");
 			} else {
 				toast("Invalid password, try again.", { type: "error" });
@@ -30,6 +32,12 @@ export const Password = () => {
 
 	useEffect(() => {
 		checkWallet();
+		const node = document.getElementsByClassName("wallet-pass")[0];
+		node.addEventListener("keyup", ({ key }) => {
+			if (key === "Enter") {
+				unlockWallet();
+			}
+		});
 	}, []);
 
 	return (
@@ -76,10 +84,12 @@ export const Password = () => {
 					<input
 						type="password"
 						id={`title`}
+						className="wallet-pass"
 						placeholder="Enter password"
 						value={password}
 						onInput={(e) => {
 							setPassword(e.target.value);
+							passwordRef.current = e.target.value;
 						}}
 						style={{
 							backgroundColor: "#222",
