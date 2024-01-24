@@ -12,7 +12,6 @@ export const Mnemonic = () => {
 		const m = createMnemonic();
 		setMnemonic(m.split(" "));
 		mnemon.current = m;
-		console.log(mnemon.current);
 	}
 
 	useEffect(() => {
