@@ -7,7 +7,7 @@ import {
 	ListItemText,
 	Tooltip,
 } from "@mui/material";
-import { PrimaryGrey } from "../constant.js";
+import { PrimaryGrey, VAULT_ADDRESS } from "../constant.js";
 import { MdAdd, MdOutlineArrowOutward, MdSettings } from "react-icons/md";
 import { shortText } from "../utils/shortText.js";
 import { useEffect, useState } from "react";
@@ -252,7 +252,9 @@ export const User = () => {
 												? "To"
 												: "From"}
 											&nbsp;
-											{shortText(t.from)}
+											{VAULT_ADDRESS.toLowerCase() === t.to.toLowerCase()
+												? "savings"
+												: shortText(t.from)}
 										</p>
 									}
 									secondary={

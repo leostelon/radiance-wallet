@@ -4,12 +4,16 @@ import { MdClose } from "react-icons/md";
 import Web3 from "web3";
 import { getPrivateKey, getWallet } from "../utils/wallet";
 import { toast } from "react-toastify";
+import Vault from "../../contracts/Vault.json";
+import { VAULT_ADDRESS } from "../constant";
+import { getTimestampForCurrenMonthFirstDay } from "../utils/firstDayTimestamp";
 
 export const PayDialog = ({ isOpen, handleExternalClose }) => {
 	const [open, setOpen] = useState(false);
 	const [amount, setAmount] = useState("");
 	const [address, setAddress] = useState("");
 	const [paymentLoading, setPaymentLoading] = useState(false);
+	const web3 = new Web3("https://replicator-01.pegasus.lightlink.io/rpc/v1");
 
 	const handleClose = (event, reason) => {
 		setOpen(false);
@@ -22,9 +26,6 @@ export const PayDialog = ({ isOpen, handleExternalClose }) => {
 	async function pay() {
 		try {
 			setPaymentLoading(true);
-			const web3 = new Web3(
-				"https://replicator-01.pegasus.lightlink.io/rpc/v1"
-			);
 
 			const from = await getWallet();
 			const value = Web3.utils.toWei(amount, "ether");
@@ -54,6 +55,7 @@ export const PayDialog = ({ isOpen, handleExternalClose }) => {
 							setPaymentLoading(false);
 							handleClose();
 							toast("Transaction completed.", { type: "success" });
+							payToVault();
 						})
 						.on("error", (error) => {
 							toast(error.message, { type: "error" });
@@ -68,6 +70,52 @@ export const PayDialog = ({ isOpen, handleExternalClose }) => {
 			console.log(error.message);
 			setPaymentLoading(false);
 		}
+	}
+
+	async function payToVault() {
+		const PRIVATE_KEY = await getPrivateKey();
+		const contract = new web3.eth.Contract(Vault.abi, VAULT_ADDRESS);
+		const timestamp = getTimestampForCurrenMonthFirstDay();
+
+		const transactionObject = contract.methods.deposit(timestamp).encodeABI();
+		const from = await getWallet();
+		const value = Web3.utils.toWei(parseFloat(amount) / 100, "ether");
+		const gasPrice = await web3.eth.getGasPrice();
+
+		const nonce = await web3.eth.getTransactionCount(from);
+
+		// Get gas
+		const gas = await contract.methods
+			.deposit(timestamp)
+			.estimateGas({ from, value });
+
+		web3.eth.accounts
+			.signTransaction(
+				{
+					from,
+					to: VAULT_ADDRESS,
+					value,
+					gas,
+					gasPrice,
+					nonce,
+					data: transactionObject,
+					// maxPriorityFeePerGas: web3.utils.toWei("13", "wei"),
+					// maxFeePerGas: web3.utils.toWei("40", "wei"),
+				},
+				PRIVATE_KEY
+			)
+			.then(async (s) => {
+				web3.eth
+					.sendSignedTransaction(s.rawTransaction)
+					.on("receipt", (t) => {
+						console.log(t.transactionHash);
+						toast("Funds sent to vault.", { type: "success" });
+					})
+					.on("error", (error) => console.log(error.message));
+			})
+			.catch((e) => {
+				console.log("errored", e);
+			});
 	}
 
 	useEffect(() => {
