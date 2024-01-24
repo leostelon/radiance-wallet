@@ -1,12 +1,37 @@
 import { Box } from "@mui/system";
-import { PrimaryGrey } from "../constant";
+import { PrimaryGrey } from "../constant.js";
 import { Avatar } from "@mui/material";
 import Logo from "../assets/logo.jpg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BlueButton } from "../components/BlueButton.jsx";
+import { TitleNavbar } from "../components/TitleNavbar.jsx";
+import { toast } from "react-toastify";
+import { getWallet } from "../utils/wallet.js";
 
-export const Welcome = () => {
+export const Password = () => {
 	const [password, setPassword] = useState("");
+	async function unlockWallet() {
+		chrome.storage.local.get(["password"], (response) => {
+			if (!response.password) response.password = "";
+			if (password === response.password) {
+				window.location.replace("#/user");
+			} else {
+				toast("Invalid password, try again.", { type: "error" });
+			}
+		});
+	}
+
+	async function checkWallet() {
+		const wallet = await getWallet();
+		if (!wallet || wallet === "") {
+			window.location.replace("#/mnemonic");
+		}
+	}
+
+	useEffect(() => {
+		checkWallet();
+	}, []);
+
 	return (
 		<Box
 			sx={{
@@ -19,17 +44,7 @@ export const Welcome = () => {
 				p: 2,
 			}}
 		>
-			<Box
-				sx={{
-					textAlign: "center",
-					fontFamily: '"Moirai One", system-ui',
-					borderBottom: "1px solid #4b4b4b",
-				}}
-			>
-				<h1>
-					radiance <small>®</small>
-				</h1>
-			</Box>
+			<TitleNavbar />
 			<Box
 				sx={{
 					flex: 1,
@@ -83,6 +98,7 @@ export const Welcome = () => {
 						padding: "8px 14px",
 						fontSize: "16px",
 					}}
+					onClick={unlockWallet}
 				/>
 			</Box>
 		</Box>
