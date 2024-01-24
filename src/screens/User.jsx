@@ -8,7 +8,7 @@ import {
 	Tooltip,
 } from "@mui/material";
 import { PrimaryGrey } from "../constant.js";
-import { MdAdd, MdOutlineArrowOutward } from "react-icons/md";
+import { MdAdd, MdOutlineArrowOutward, MdSettings } from "react-icons/md";
 import { shortText } from "../utils/shortText.js";
 import { useEffect, useRef, useState } from "react";
 import Web3 from "web3";
@@ -21,16 +21,17 @@ import { RecieveDialog } from "../components/Recieve.jsx";
 import { GoArrowDownLeft } from "react-icons/go";
 import { getWallet } from "../utils/wallet.js";
 import { getTransactionsByAccount } from "../api/blockscout.js";
+import { useNavigate } from "react-router";
 
 export const User = () => {
 	const [address, setAddress] = useState("");
 	const [balance, setBalance] = useState("0");
 	const [notification, setNotification] = useState(false);
 	const [open, setOpen] = useState(false);
-	const node = useRef(undefined);
 	const [payOpen, setPayOpen] = useState(false);
 	const [recieveOpen, setRecieveOpen] = useState(false);
 	const [transactions, setTransactions] = useState([]);
+	const navigate = useNavigate();
 
 	async function getBalance(a) {
 		try {
@@ -106,33 +107,46 @@ export const User = () => {
 					backgroundRepeat: "no-repeat",
 				}}
 			>
-				<Box display={"flex"} alignItems="center" mt={2} mb={10}>
-					<Avatar
-						sx={{
-							height: "55px",
-							width: "55px",
-							mr: 2,
-							bgcolor: "white",
-							p: 0.75,
-						}}
-						src={Logo}
-					/>
-					<Tooltip
-						title="Copied!"
-						placement="top"
-						open={open}
-						onClose={() => setOpen(false)}
-					>
-						<h1
-							onClick={() => {
-								navigator.clipboard.writeText(address);
-								setOpen(true);
+				<Box sx={{ display: "flex", justifyContent: "space-between" }}>
+					<Box display={"flex"} alignItems="center" mt={2} mb={10}>
+						<Avatar
+							sx={{
+								height: "35px",
+								width: "35px",
+								mr: 2,
+								bgcolor: "white",
+								p: 0.75,
 							}}
-							style={{ cursor: "pointer" }}
+							src={Logo}
+						/>
+						<Tooltip
+							title="Copied!"
+							placement="top"
+							open={open}
+							onClose={() => setOpen(false)}
 						>
-							{shortText(address)}
-						</h1>
-					</Tooltip>
+							<h1
+								onClick={() => {
+									navigator.clipboard.writeText(address);
+									setOpen(true);
+								}}
+								style={{ cursor: "pointer" }}
+							>
+								{shortText(address)}
+							</h1>
+						</Tooltip>
+					</Box>
+					<Box mt={2}>
+						<MdSettings
+							style={{
+								height: "25px",
+								width: "25px",
+								color: "white",
+								cursor: "pointer",
+							}}
+							onClick={() => (window.location = "#/settings")}
+						/>
+					</Box>
 				</Box>
 				<Box
 					sx={{
