@@ -43,7 +43,7 @@ export const FromMnemonic = () => {
 							return toast("Please paste a valid passphrase", { type: "info" });
 						const m = mnemonic.join(" ");
 						await createWallet(m);
-						window.location.replace("#/");
+						window.location.replace("#/createpassword");
 					}}
 					title={"Continue"}
 				/>

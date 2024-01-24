@@ -42,7 +42,7 @@ export const Mnemonic = () => {
 				<BlueButton
 					onClick={async () => {
 						await createWallet(mnemon.current);
-						window.location.replace("#/");
+						window.location.replace("#/createpassword");
 					}}
 					title={"Continue"}
 				/>

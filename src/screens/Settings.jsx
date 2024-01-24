@@ -14,7 +14,7 @@ import { PrimaryGrey } from "../constant.js";
 export const Settings = () => {
 	function lO() {
 		chrome.storage.local.set({ address: "" }, function () {
-			window.location.replace("#/");
+			window.location.replace("#/mnemonic");
 		});
 	}
 

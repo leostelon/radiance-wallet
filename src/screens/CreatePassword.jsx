@@ -67,7 +67,7 @@ export const CreatePassword = () => {
 						if (!password || password === "")
 							return toast("Please set a valid password", { type: "info" });
 						chrome.storage.local.set({ password }, () => {
-							window.location.replace("#/");
+							window.location.replace("#/user");
 						});
 					}}
 				/>
