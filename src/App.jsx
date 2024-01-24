@@ -7,6 +7,7 @@ import { FromMnemonic } from "./screens/FromMnemonic.jsx";
 import { Settings } from "./screens/Settings.jsx";
 import { RevealSecret } from "./screens/RevealSecret.jsx";
 import { Welcome } from "./screens/Welcome.jsx";
+import { CreatePassword } from "./screens/CreatePassword.jsx";
 
 function App() {
 	useEffect(() => {
@@ -16,6 +17,8 @@ function App() {
 	return (
 		<Routes>
 			<Route path="/" exact element={<User />} />
+			{/* <Route path="/" exact element={<Welcome />} /> */}
+			<Route path="/createpassword" exact element={<CreatePassword />} />
 			<Route path="/mnemonic" exact element={<Mnemonic />} />
 			<Route path="/frommnemonic" exact element={<FromMnemonic />} />
 			<Route path="/settings" exact element={<Settings />} />

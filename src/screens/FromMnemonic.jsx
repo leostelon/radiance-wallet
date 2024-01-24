@@ -39,7 +39,6 @@ export const FromMnemonic = () => {
 			>
 				<BlueButton
 					onClick={async () => {
-						console.log(mnemonic.length !== 12);
 						if (!(mnemonic.length !== 12 || mnemonic.length !== 24))
 							return toast("Please paste a valid passphrase", { type: "info" });
 						const m = mnemonic.join(" ");
