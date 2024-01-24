@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { Mnemonic } from "./screens/Mnemonic.jsx";
 import { FromMnemonic } from "./screens/FromMnemonic.jsx";
 import { Settings } from "./screens/Settings.jsx";
+import { RevealSecret } from "./screens/RevealSecret.jsx";
+import { Welcome } from "./screens/Welcome.jsx";
 
 function App() {
 	useEffect(() => {
@@ -17,6 +19,7 @@ function App() {
 			<Route path="/mnemonic" exact element={<Mnemonic />} />
 			<Route path="/frommnemonic" exact element={<FromMnemonic />} />
 			<Route path="/settings" exact element={<Settings />} />
+			<Route path="/revealsecret" exact element={<RevealSecret />} />
 		</Routes>
 	);
 }

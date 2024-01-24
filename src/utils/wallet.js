@@ -10,10 +10,13 @@ export async function createWallet(mnemonic) {
 		// Create a wallet from the passphrase
 		const wallet = ethers.Wallet.fromPhrase(mnemonic);
 
-		chrome.storage.local.set({ address: wallet.address }, function () {
-			// Display the wallet address
-			console.log("Wallet Address:", wallet.address);
-		});
+		chrome.storage.local.set(
+			{ address: wallet.address, mnemonic },
+			function () {
+				// Display the wallet address
+				console.log("Wallet Address:", wallet.address);
+			}
+		);
 	}
 }
 
