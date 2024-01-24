@@ -1,7 +1,6 @@
 import "../styles/Mnemonic.css";
 import {
 	Box,
-	Icon,
 	IconButton,
 	List,
 	ListItem,
@@ -9,21 +8,15 @@ import {
 	ListItemIcon,
 	ListItemText,
 } from "@mui/material";
-import { useEffect } from "react";
 import { MdArrowBack, MdKey, MdOutlineLogout } from "react-icons/md";
 import { PrimaryGrey } from "../constant.js";
 
 export const Settings = () => {
-	function sM() {}
 	function lO() {
 		chrome.storage.local.set({ address: "" }, function () {
-			window.location.replace("/");
+			window.location.replace("#/");
 		});
 	}
-
-	useEffect(() => {
-		sM();
-	}, []);
 
 	return (
 		<Box>
