@@ -18,9 +18,10 @@ import Logo from "../assets/logo.jpg";
 import { PayDialog } from "../components/Transfer.jsx";
 import { RecieveDialog } from "../components/Recieve.jsx";
 // import { getTransactionsByAccount } from "../api/transaction";
-import { GoArrowDownLeft } from "react-icons/go";
+import { GoArrowDownLeft, GoArrowUpRight } from "react-icons/go";
 import { getWallet } from "../utils/wallet.js";
 import { getTransactionsByAccount } from "../api/blockscout.js";
+import { formatTimestampToHumanReadable } from "../utils/humanReadableTime.js";
 
 export const User = () => {
 	const [address, setAddress] = useState("");
@@ -197,7 +198,11 @@ export const User = () => {
 				<Box mt={4}>
 					<h3 style={{ marginBottom: "8px" }}>All Activity</h3>
 				</Box>
-				<Box>
+				<Box
+					sx={{
+						backgroundColor: "#fde9e9",
+					}}
+				>
 					{transactions.map((t, i) => {
 						return (
 							<ListItem
@@ -207,13 +212,54 @@ export const User = () => {
 										{Number(Web3.utils.fromWei(t.value, "ether")).toFixed(2)}ETH
 									</h4>
 								}
+								sx={{
+									cursor: "pointer",
+								}}
+								onClick={() =>
+									window.open(
+										`https://pegasus.lightlink.io/tx/${t.hash}`,
+										"_blank"
+									)
+								}
 							>
 								<ListItemIcon>
-									<GoArrowDownLeft />
+									<Box
+										sx={{
+											backgroundColor: "white",
+											display: "flex",
+											justifyContent: "center",
+											alignItems: "center",
+											borderRadius: "50%",
+											p: 1,
+										}}
+									>
+										{address.toLowerCase() === t.from.toLowerCase() ? (
+											<GoArrowUpRight size={16} color="red" />
+										) : (
+											<GoArrowDownLeft size={16} color="green" />
+										)}
+									</Box>
 								</ListItemIcon>
 								<ListItemText
-									primary={shortText(t.from)}
-									secondary="Jan 7, 2014"
+									primary={
+										<p
+											style={{
+												fontWeight: "600",
+												fontSize: "14px",
+											}}
+										>
+											{address.toLowerCase() === t.from.toLowerCase()
+												? "To"
+												: "From"}
+											&nbsp;
+											{shortText(t.from)}
+										</p>
+									}
+									secondary={
+										<small style={{ fontSize: "10px" }}>
+											{formatTimestampToHumanReadable(t.timeStamp * 1000)}
+										</small>
+									}
 								/>
 							</ListItem>
 						);
