@@ -2,10 +2,6 @@
 pragma solidity ^0.8.0;
 
 contract Vault {
-    mapping(address => uint256) public balance;
-    mapping(address => bool) public withdrawn;
-    mapping(address => uint256) public timing;
-
     mapping(address => mapping(uint256 => Slot)) public slot;
     mapping(address => uint256) public current_slot;
     mapping(address => uint256) public total_balance;
@@ -21,45 +17,35 @@ contract Vault {
     }
 
     function withdraw() public {
-        require(block.timestamp >= timing[msg.sender], "Can't withdraw now!");
-        (bool sent, ) = payable (msg.sender).call{value: balance[msg.sender]}("");
-        require(sent, "Unable to withdraw");
-        withdrawn[msg.sender] = true;
-    }
-
-    function withdraw2() public {
         (bool sent, ) = payable (msg.sender).call{value: withdrawal_balance[msg.sender]}("");
         require(sent, "Unable to withdraw");
         total_balance[msg.sender] -= withdrawal_balance[msg.sender];
         withdrawal_balance[msg.sender] = 0;
     }
 
-    function deposit(uint256 _timing) public payable {
+    function deposit(uint256 _expire_at) public payable {
         require(msg.value > 0, "Please send more than 0.");
-        balance[msg.sender] += msg.value;
-        if(withdrawn[msg.sender]) {
-            withdrawn[msg.sender] = false;
-        }
-        timing[msg.sender] = _timing;
-    }
-
-    function deposit2(uint256 _expire_at) public payable {
-        require(msg.value > 0, "Please send more than 0.");
-
-        // Update current slot number
-        if(block.timestamp >= _expire_at) {
-            current_slot[msg.sender] += 1;
-        }
 
         // Slot updates
         uint256 current_slot_number = current_slot[msg.sender];
-        Slot memory sd = slot[msg.sender][current_slot_number];
-        sd.balance += msg.value;
-        sd.expire_at = _expire_at;
-        // Update withdrawal balance
-        if(block.timestamp >= _expire_at) {
-            withdrawal_balance[msg.sender] += slot[msg.sender][current_slot_number - 1].balance;
+        Slot storage currentSlot = slot[msg.sender][current_slot_number];
+
+        // Update current slot number
+        if(_expire_at > currentSlot.expire_at) {
+            if(currentSlot.expire_at != 0) {
+                current_slot[msg.sender] += 1;
+            }
         }
+
+        // Update withdrawal balance
+        if(_expire_at > currentSlot.expire_at) {
+            if(current_slot[msg.sender] != 0) {
+                withdrawal_balance[msg.sender] += slot[msg.sender][current_slot[msg.sender] - 1].balance;
+            }
+        }
+        currentSlot = slot[msg.sender][current_slot[msg.sender]];
+        currentSlot.expire_at = _expire_at;
+        currentSlot.balance += msg.value;
         // End Slot update
         
         total_balance[msg.sender] += msg.value;
