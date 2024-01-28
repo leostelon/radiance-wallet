@@ -69,7 +69,6 @@ export const User = () => {
 
 	useEffect(() => {
 		gW();
-		let connected = false;
 	}, []);
 
 	return (
@@ -81,11 +80,6 @@ export const User = () => {
 				justifyContent: "center",
 			}}
 		>
-			{/* <Notification
-				isOpen={notification}
-				handleExternalClose={handleNotificationDialogClose}
-				data={notifData}
-			/> */}
 			<PayDialog
 				isOpen={payOpen}
 				handleExternalClose={handleNotificationDialogClose}
@@ -196,14 +190,14 @@ export const User = () => {
 					</Box>
 				</Box>
 				<Box mt={4}>
-					<h3 style={{ marginBottom: "8px" }}>All Activity</h3>
+					<h3 style={{ marginBottom: "8px" }}>Recent Activity</h3>
 				</Box>
 				<Box
 					sx={{
 						backgroundColor: "#fde9e9",
 					}}
 				>
-					{transactions.map((t, i) => {
+					{transactions.slice(0, 3).map((t, i) => {
 						return (
 							<ListItem
 								key={i}
