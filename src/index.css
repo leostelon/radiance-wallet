@@ -8,3 +8,10 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 	background-color: white;
 }
+
+.nav-menu-item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+}
