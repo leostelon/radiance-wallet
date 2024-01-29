@@ -8,7 +8,6 @@ import { Settings } from "./screens/Settings.jsx";
 import { RevealSecret } from "./screens/RevealSecret.jsx";
 import { Password } from "./screens/Password.jsx";
 import { CreatePassword } from "./screens/CreatePassword.jsx";
-import { Vault } from "./screens/Vault.jsx";
 import { Index } from "./screens/Index.jsx";
 
 function App() {
@@ -18,7 +17,8 @@ function App() {
 
 	return (
 		<Routes>
-			<Route path="/" exact element={<Index />} />
+			<Route path="/" exact element={<Password />} />
+			<Route path="/index" exact element={<Index />} />
 			<Route path="/createpassword" exact element={<CreatePassword />} />
 			<Route path="/mnemonic" exact element={<Mnemonic />} />
 			<Route path="/frommnemonic" exact element={<FromMnemonic />} />

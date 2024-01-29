@@ -34,6 +34,7 @@ export const Vault = () => {
 			.call({ from });
 		setWithdrawal_bal(withdrawal_balance);
 		setLocked_bal(total_balance - withdrawal_balance);
+		console.log(total_balance, withdrawal_balance, locked_bal);
 	}
 
 	async function withdraw() {
@@ -121,7 +122,10 @@ export const Vault = () => {
 								{
 									data: [
 										{
-											value: Web3.utils.fromWei(withdrawal_bal, "ether"),
+											value:
+												withdrawal_bal === 0n && locked_bal === 0n
+													? 1
+													: Web3.utils.fromWei(withdrawal_bal, "ether"),
 											color: "rgb(36 213 38)",
 										},
 										{
