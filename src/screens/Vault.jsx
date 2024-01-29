@@ -7,9 +7,38 @@ import { useDrawingArea } from "@mui/x-charts";
 import Lightlink_logo from "../assets/lightlink-logo.png";
 import { getTimestampForCurrenMonthFirstDay } from "../utils/firstDayTimestamp.js";
 import Countdown from "react-countdown";
+import Web3 from "web3";
+import VAULTABI from "../../contracts/Vault.json";
+import { VAULT_ADDRESS } from "../constant.js";
+import { useEffect, useState } from "react";
+import { getWallet } from "../utils/wallet.js";
 
 export const Vault = () => {
 	const pieParams = { height: 200, margin: { right: 5 } };
+	const web3 = new Web3("https://replicator-01.pegasus.lightlink.io/rpc/v1");
+	const [total_bal, setTotal_bal] = useState(0);
+	const [withdrawal_bal, setWithdrawal_bal] = useState(0);
+	const [locked_bal, setLocked_bal] = useState(0);
+
+	async function geyBalances() {
+		const contract = new web3.eth.Contract(VAULTABI.abi, VAULT_ADDRESS);
+		const from = "0x3b18dCa02FA6945aCBbE2732D8942781B410E0F9";
+
+		// Precompute address
+		const total_balance = await contract.methods
+			.total_balance(from)
+			.call({ from });
+		setTotal_bal(total_balance);
+		const withdrawal_balance = await contract.methods
+			.withdrawal_balance(from)
+			.call({ from });
+		setWithdrawal_bal(withdrawal_balance);
+		setLocked_bal(total_balance - withdrawal_balance);
+	}
+
+	useEffect(() => {
+		geyBalances();
+	}, []);
 
 	return (
 		<Box
@@ -65,8 +94,8 @@ export const Vault = () => {
 								bottom: "55px",
 							}}
 						>
-							<img src={Lightlink_logo} alt="logo" height={"35px"} />
-							<h2>158</h2>
+							<img src={Lightlink_logo} alt="logo" height={"30px"} />
+							<h2>{Web3.utils.fromWei(total_bal, "ether")}</h2>
 							<p style={{ color: "grey" }}>Available</p>
 						</Box>
 					</Box>
@@ -84,14 +113,14 @@ export const Vault = () => {
 						<small style={{ color: "grey", fontWeight: "500" }}>
 							●&nbsp;Available
 						</small>
-						<h3>78.00</h3>
+						<h3>{Web3.utils.fromWei(withdrawal_bal, "ether")}</h3>
 					</Box>
 					<Divider style={{ width: "50%", transform: " rotate(90deg)" }} />
 					<Box>
 						<small style={{ color: "grey", fontWeight: "500" }}>
 							●&nbsp;Locked
 						</small>
-						<h3>12.00</h3>
+						<h3>{Web3.utils.fromWei(locked_bal, "ether")}</h3>
 					</Box>
 				</Box>
 			</Box>
