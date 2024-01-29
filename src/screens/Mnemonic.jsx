@@ -1,10 +1,11 @@
 import "../styles/Mnemonic.css";
-import { Box } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { createMnemonic, createWallet } from "../utils/wallet";
 import { BlueButton } from "../components/BlueButton.jsx";
 
 export const Mnemonic = () => {
+	const [open, setOpen] = useState(false);
 	const [mnemonic, setMnemonic] = useState([]);
 	const mnemon = useRef();
 
@@ -33,6 +34,26 @@ export const Mnemonic = () => {
 					))}
 				</div>
 			</Box>
+			<Tooltip
+				title="Copied!"
+				placement="top"
+				open={open}
+				onClose={() => setOpen(false)}
+			>
+				<Box
+					sx={{
+						color: "blue",
+						cursor: "pointer",
+						textAlign: "center",
+					}}
+					onClick={() => {
+						navigator.clipboard.writeText(mnemonic.join(" "));
+						setOpen(true);
+					}}
+				>
+					<small>Tap to copy</small>
+				</Box>
+			</Tooltip>
 
 			<Box
 				sx={{

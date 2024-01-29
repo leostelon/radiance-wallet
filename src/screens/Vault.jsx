@@ -22,7 +22,7 @@ export const Vault = () => {
 
 	async function geyBalances() {
 		const contract = new web3.eth.Contract(VAULTABI.abi, VAULT_ADDRESS);
-		const from = "0x3b18dCa02FA6945aCBbE2732D8942781B410E0F9";
+		const from = await getWallet();
 
 		// Precompute address
 		const total_balance = await contract.methods
@@ -74,8 +74,14 @@ export const Vault = () => {
 							series={[
 								{
 									data: [
-										{ value: 20, color: "rgb(36 213 38)" },
-										{ value: 10, color: "#c7c7c7" },
+										{
+											value: Web3.utils.fromWei(withdrawal_bal, "ether"),
+											color: "rgb(36 213 38)",
+										},
+										{
+											value: Web3.utils.fromWei(locked_bal, "ether"),
+											color: "#c7c7c7",
+										},
 									],
 									innerRadius: 60,
 									outerRadius: 80,
@@ -111,7 +117,7 @@ export const Vault = () => {
 				>
 					<Box>
 						<small style={{ color: "grey", fontWeight: "500" }}>
-							●&nbsp;Available
+							<span style={{ color: "rgb(36 213 38)" }}>●</span>&nbsp;Available
 						</small>
 						<h3>{Web3.utils.fromWei(withdrawal_bal, "ether")}</h3>
 					</Box>
@@ -124,7 +130,7 @@ export const Vault = () => {
 					</Box>
 				</Box>
 			</Box>
-			<Box sx={{ pb: 12 }}>
+			<Box sx={{ pb: 12, mt: 4 }}>
 				<BlueButton title={"Withdraw"} />
 			</Box>
 		</Box>
