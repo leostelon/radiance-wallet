@@ -1,18 +1,22 @@
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import "../styles/Vault.css";
+import { Box, Divider, Stack } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { BlueButton } from "../components/BlueButton.jsx";
 import styled from "@emotion/styled";
 import { useDrawingArea } from "@mui/x-charts";
 import Lightlink_logo from "../assets/lightlink-logo.png";
+import { getTimestampForCurrenMonthFirstDay } from "../utils/firstDayTimestamp.js";
+import Countdown from "react-countdown";
 
 export const Vault = () => {
 	const pieParams = { height: 200, margin: { right: 5 } };
+
 	return (
 		<Box
 			sx={{
 				display: "flex",
 				flexDirection: "column",
-				height: "100%",
+				// height: "100%",
 				p: 2,
 			}}
 		>
@@ -29,9 +33,11 @@ export const Vault = () => {
 					<small style={{ color: "grey", fontWeight: "500" }}>
 						NEXT WITHDRAWAL IN
 					</small>
-					<p style={{ color: "grey", fontWeight: "bold", color: "black" }}>
-						23D 12:30:48
-					</p>
+					<br />
+					<Countdown
+						date={getTimestampForCurrenMonthFirstDay() * 1000}
+						className="counter"
+					/>
 				</Box>
 				<Stack direction="row" width="100%" textAlign="center" spacing={2}>
 					<Box flexGrow={1} sx={{ position: "relative" }}>
