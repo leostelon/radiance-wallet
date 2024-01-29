@@ -27,6 +27,7 @@ export const Transactions = () => {
 		<Box
 			sx={{
 				backgroundColor: "#fde9e9",
+				height: "100%",
 				p: 2,
 			}}
 		>
@@ -34,69 +35,75 @@ export const Transactions = () => {
 				<h3 style={{ marginBottom: "8px" }}>All Activity</h3>
 			</Box>
 			<Box>
-				{transactions.map((t, i) => {
-					return (
-						<ListItem
-							key={i}
-							secondaryAction={
-								<h4>
-									{Number(Web3.utils.fromWei(t.value, "ether")).toFixed(2)}ETH
-								</h4>
-							}
-							sx={{
-								cursor: "pointer",
-							}}
-							onClick={() =>
-								window.open(
-									`https://pegasus.lightlink.io/tx/${t.hash}`,
-									"_blank"
-								)
-							}
-						>
-							<ListItemIcon>
-								<Box
-									sx={{
-										backgroundColor: "white",
-										display: "flex",
-										justifyContent: "center",
-										alignItems: "center",
-										borderRadius: "50%",
-										p: 1,
-									}}
-								>
-									{address.toLowerCase() === t.from.toLowerCase() ? (
-										<GoArrowUpRight size={16} color="red" />
-									) : (
-										<GoArrowDownLeft size={16} color="green" />
-									)}
-								</Box>
-							</ListItemIcon>
-							<ListItemText
-								primary={
-									<p
-										style={{
-											fontWeight: "600",
-											fontSize: "14px",
+				{transactions.length === 0 ? (
+					<Box>
+						<p>No transactions</p>
+					</Box>
+				) : (
+					transactions.map((t, i) => {
+						return (
+							<ListItem
+								key={i}
+								secondaryAction={
+									<h4>
+										{Number(Web3.utils.fromWei(t.value, "ether")).toFixed(2)}ETH
+									</h4>
+								}
+								sx={{
+									cursor: "pointer",
+								}}
+								onClick={() =>
+									window.open(
+										`https://pegasus.lightlink.io/tx/${t.hash}`,
+										"_blank"
+									)
+								}
+							>
+								<ListItemIcon>
+									<Box
+										sx={{
+											backgroundColor: "white",
+											display: "flex",
+											justifyContent: "center",
+											alignItems: "center",
+											borderRadius: "50%",
+											p: 1,
 										}}
 									>
-										{address.toLowerCase() === t.from.toLowerCase()
-											? "To"
-											: "From"}
-										&nbsp;
-										{VAULT_ADDRESS.toLowerCase() === t.to.toLowerCase()
-											? "savings"
-											: shortText(t.from)}
-									</p>
-								}
-								secondary={
-									<small style={{ fontSize: "10px" }}>
-										{formatTimestampToHumanReadable(t.timeStamp * 1000)}
-									</small>
-								}
-							/>
-						</ListItem>
-					);
-				})}
+										{address.toLowerCase() === t.from.toLowerCase() ? (
+											<GoArrowUpRight size={16} color="red" />
+										) : (
+											<GoArrowDownLeft size={16} color="green" />
+										)}
+									</Box>
+								</ListItemIcon>
+								<ListItemText
+									primary={
+										<p
+											style={{
+												fontWeight: "600",
+												fontSize: "14px",
+											}}
+										>
+											{address.toLowerCase() === t.from.toLowerCase()
+												? "To"
+												: "From"}
+											&nbsp;
+											{VAULT_ADDRESS.toLowerCase() === t.to.toLowerCase()
+												? "savings"
+												: shortText(t.from)}
+										</p>
+									}
+									secondary={
+										<small style={{ fontSize: "10px" }}>
+											{formatTimestampToHumanReadable(t.timeStamp * 1000)}
+										</small>
+									}
+								/>
+							</ListItem>
+						);
+					})
+				)}
 			</Box>
 		</Box>
 	);

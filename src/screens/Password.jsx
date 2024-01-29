@@ -16,7 +16,7 @@ export const Password = () => {
 		chrome.storage.local.get(["password"], (response) => {
 			if (!response.password) response.password = "";
 			if (passwordRef.current === response.password) {
-				window.location.replace("#/user");
+				window.location.replace("#/index");
 			} else {
 				toast("Invalid password, try again.", { type: "error" });
 			}

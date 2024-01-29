@@ -69,7 +69,7 @@ export const CreatePassword = () => {
 						// Plain password is stored in chrome storage
 						// No hashing is performed, neither the wallet is password protected
 						chrome.storage.local.set({ password }, () => {
-							window.location.replace("#/user");
+							window.location.replace("#/index");
 						});
 					}}
 				/>
