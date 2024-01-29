@@ -2,8 +2,6 @@ import "../styles/Vault.css";
 import { Box, Divider, Stack } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { BlueButton } from "../components/BlueButton.jsx";
-import styled from "@emotion/styled";
-import { useDrawingArea } from "@mui/x-charts";
 import Lightlink_logo from "../assets/lightlink-logo.png";
 import { getTimestampForCurrenMonthFirstDay } from "../utils/firstDayTimestamp.js";
 import Countdown from "react-countdown";
@@ -11,7 +9,8 @@ import Web3 from "web3";
 import VAULTABI from "../../contracts/Vault.json";
 import { VAULT_ADDRESS } from "../constant.js";
 import { useEffect, useState } from "react";
-import { getWallet } from "../utils/wallet.js";
+import { getPrivateKey, getWallet } from "../utils/wallet.js";
+import { toast } from "react-toastify";
 
 export const Vault = () => {
 	const pieParams = { height: 200, margin: { right: 5 } };
@@ -19,6 +18,7 @@ export const Vault = () => {
 	const [total_bal, setTotal_bal] = useState(0);
 	const [withdrawal_bal, setWithdrawal_bal] = useState(0);
 	const [locked_bal, setLocked_bal] = useState(0);
+	const [loading, setLoading] = useState(false);
 
 	async function geyBalances() {
 		const contract = new web3.eth.Contract(VAULTABI.abi, VAULT_ADDRESS);
@@ -34,6 +34,52 @@ export const Vault = () => {
 			.call({ from });
 		setWithdrawal_bal(withdrawal_balance);
 		setLocked_bal(total_balance - withdrawal_balance);
+	}
+
+	async function withdraw() {
+		setLoading(true);
+		const PRIVATE_KEY = await getPrivateKey();
+		const contract = new web3.eth.Contract(VAULTABI.abi, VAULT_ADDRESS);
+
+		const transactionObject = contract.methods.withdraw().encodeABI();
+		const from = await getWallet();
+		const gasPrice = await web3.eth.getGasPrice();
+
+		const nonce = await web3.eth.getTransactionCount(from);
+
+		// Get gas
+		const gas = await contract.methods.withdraw().estimateGas({ from });
+
+		web3.eth.accounts
+			.signTransaction(
+				{
+					from,
+					to: VAULT_ADDRESS,
+					gas,
+					gasPrice,
+					nonce,
+					data: transactionObject,
+				},
+				PRIVATE_KEY
+			)
+			.then(async (s) => {
+				web3.eth
+					.sendSignedTransaction(s.rawTransaction)
+					.on("receipt", (t) => {
+						console.log(t.transactionHash);
+						toast("Funds have been withdrawn", { type: "success" });
+						setLoading(false);
+						geyBalances();
+					})
+					.on("error", (error) => {
+						setLoading(false);
+						console.log(error.message);
+					});
+			})
+			.catch((e) => {
+				setLoading(false);
+				console.log("errored", e);
+			});
 	}
 
 	useEffect(() => {
@@ -131,24 +177,8 @@ export const Vault = () => {
 				</Box>
 			</Box>
 			<Box sx={{ pb: 12, mt: 4 }}>
-				<BlueButton title={"Withdraw"} />
+				<BlueButton title={"Withdraw"} onClick={withdraw} loading={loading} />
 			</Box>
 		</Box>
 	);
 };
-
-const StyledText = styled("text")(({ theme }) => ({
-	// fill: theme.palette.text.primary,
-	textAnchor: "middle",
-	dominantBaseline: "central",
-	whiteSpace: "pre-line",
-}));
-
-function PieCenterLabel({ children }) {
-	const { width, height, left, top } = useDrawingArea();
-	return (
-		<StyledText x={left + width / 2} y={top + height / 2}>
-			{children}
-		</StyledText>
-	);
-}
