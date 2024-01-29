@@ -53,6 +53,7 @@ export const FromMnemonic = () => {
 					color: "blue",
 					textAlign: "center",
 					cursor: "pointer",
+					textDecoration: "underline",
 				}}
 				onClick={() => {
 					window.location.replace("#/mnemonic");

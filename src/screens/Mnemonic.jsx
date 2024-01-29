@@ -3,6 +3,8 @@ import { Box, Tooltip } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { createMnemonic, createWallet } from "../utils/wallet";
 import { BlueButton } from "../components/BlueButton.jsx";
+import { MdContentCopy } from "react-icons/md";
+import { PrimaryGrey } from "../constant.js";
 
 export const Mnemonic = () => {
 	const [open, setOpen] = useState(false);
@@ -45,13 +47,23 @@ export const Mnemonic = () => {
 						color: "blue",
 						cursor: "pointer",
 						textAlign: "center",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
 					}}
 					onClick={() => {
 						navigator.clipboard.writeText(mnemonic.join(" "));
 						setOpen(true);
 					}}
 				>
-					<small>Tap to copy</small>
+					<small style={{ fontWeight: "600" }}>Copy</small>
+					<MdContentCopy
+						style={{
+							cursor: "pointer",
+							marginLeft: "8px",
+						}}
+						size={16}
+					/>
 				</Box>
 			</Tooltip>
 
@@ -73,6 +85,7 @@ export const Mnemonic = () => {
 					color: "blue",
 					textAlign: "center",
 					cursor: "pointer",
+					textDecoration: "underline",
 				}}
 				onClick={() => {
 					window.location.replace("#/frommnemonic");
