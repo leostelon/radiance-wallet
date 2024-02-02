@@ -14,7 +14,7 @@ export const FromMnemonic = () => {
 	useEffect(() => {}, []);
 
 	return (
-		<Box>
+		<Box sx={{ p: 2 }}>
 			<Box sx={{ textAlign: "center" }}>
 				<h2>Paste passphrase</h2>
 				<p>Paste your secret passphrase below</p>

@@ -22,7 +22,7 @@ export const Mnemonic = () => {
 	}, []);
 
 	return (
-		<Box>
+		<Box sx={{ p: 2 }}>
 			<Box sx={{ textAlign: "center" }}>
 				<h2>Secret passphrase</h2>
 				<p>Please note down the secret passphrase before proceeding.</p>
