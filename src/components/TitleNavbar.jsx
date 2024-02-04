@@ -6,7 +6,7 @@ export function TitleNavbar() {
 			sx={{
 				textAlign: "center",
 				fontFamily: '"Moirai One", system-ui',
-				borderBottom: "1px solid white",
+				borderBottom: "1px solid #4b4b4b",
 			}}
 		>
 			<h1>

@@ -22,7 +22,7 @@ export const RevealSecret = () => {
 	}, []);
 
 	return (
-		<Box>
+		<Box sx={{ p: 2 }}>
 			<Box sx={{ textAlign: "center" }}>
 				<h2>Secret passphrase</h2>
 				<p>Please don't share your secret passphrase with anyone.</p>

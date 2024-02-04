@@ -13,7 +13,7 @@ import { shortText } from "../utils/shortText.js";
 import { useEffect, useState } from "react";
 import Web3 from "web3";
 import Userbg from "../assets/user-bg.png";
-import Logo from "../assets/logo.jpg";
+import Logo from "../assets/logo-dark.png";
 import { PayDialog } from "../components/Transfer.jsx";
 import { RecieveDialog } from "../components/Recieve.jsx";
 import { GoArrowDownLeft, GoArrowUpRight } from "react-icons/go";

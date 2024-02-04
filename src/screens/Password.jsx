@@ -1,6 +1,7 @@
 import { Box } from "@mui/system";
 import { Avatar } from "@mui/material";
-import Logo from "../assets/logo-light.png";
+import Logo from "../assets/logo-dark.png";
+import Frame from "../assets/Frame 5.png";
 import { useEffect, useRef, useState } from "react";
 import { BlueButton } from "../components/BlueButton.jsx";
 import { TitleNavbar } from "../components/TitleNavbar.jsx";
@@ -42,16 +43,18 @@ export const Password = () => {
 	return (
 		<Box
 			sx={{
-				backgroundColor: "#473bc1",
+				background: `url("${Frame}")`,
+				backgroundPosition: "center",
+				backgroundSize: "cover",
+				backgroundRepeat: "no-repeat",
 				height: "100vh",
 				width: "100vw",
-				color: "white",
+				color: "black",
 				display: "flex",
 				flexDirection: "column",
 				p: 2,
 			}}
 		>
-			<TitleNavbar />
 			<Box
 				sx={{
 					flex: 1,
@@ -61,28 +64,26 @@ export const Password = () => {
 					alignItems: "center",
 				}}
 			>
-				<Avatar
+				<Box
 					sx={{
-						height: "55px",
-						width: "55px",
+						height: "90px",
+						width: "90px",
 						mb: 3,
-						bgcolor: "#473bc1",
 						p: 0.75,
 					}}
-					src={Logo}
 				/>
-				<h1 style={{ fontWeight: "600", fontSize: "24px" }}>
+				<h1 style={{ fontWeight: "500", fontSize: "16px" }}>
 					Enter your password
 				</h1>
 				<Box
 					className="default-text-input"
 					sx={{
 						width: "100%",
-						backgroundColor: "white",
+						backgroundColor: "#ddd",
 						padding: "6px 12px",
 					}}
 					mb={3}
-					mt={3}
+					mt={1}
 				>
 					<input
 						type="password"
@@ -95,7 +96,7 @@ export const Password = () => {
 							passwordRef.current = e.target.value;
 						}}
 						style={{
-							backgroundColor: "white",
+							backgroundColor: "#ddd",
 							fontSize: "16px",
 						}}
 					/>
@@ -105,7 +106,6 @@ export const Password = () => {
 				<BlueButton
 					title={"Unlock"}
 					style={{
-						backgroundColor: "#6f78ff",
 						padding: "8px 14px",
 						fontSize: "16px",
 					}}

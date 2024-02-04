@@ -9,6 +9,7 @@ import { RevealSecret } from "./screens/RevealSecret.jsx";
 import { Password } from "./screens/Password.jsx";
 import { CreatePassword } from "./screens/CreatePassword.jsx";
 import { Index } from "./screens/Index.jsx";
+import { Welcome } from "./screens/Welcome.jsx";
 
 function App() {
 	useEffect(() => {
@@ -17,7 +18,8 @@ function App() {
 
 	return (
 		<Routes>
-			<Route path="/" exact element={<Password />} />
+			<Route path="/" exact element={<Welcome />} />
+			<Route path="/password" exact element={<Password />} />
 			<Route path="/index" exact element={<Index />} />
 			<Route path="/createpassword" exact element={<CreatePassword />} />
 			<Route path="/mnemonic" exact element={<Mnemonic />} />

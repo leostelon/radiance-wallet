@@ -1,6 +1,6 @@
 {
-	"name": "Gettign started",
-	"description": "extension from getting",
+	"name": "Radiance - Lightlink wallet.",
+	"description": "Radiance, a Lightlink network saving wallet, save on every transaction.",
 	"version": "1.0",
 	"manifest_version": 3,
 	"action": {
