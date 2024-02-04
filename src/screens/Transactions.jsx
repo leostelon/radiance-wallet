@@ -26,7 +26,7 @@ export const Transactions = () => {
 	return (
 		<Box
 			sx={{
-				backgroundColor: "#fde9e9",
+				backgroundColor: "white",
 				height: "100%",
 				p: 2,
 			}}
@@ -62,7 +62,7 @@ export const Transactions = () => {
 								<ListItemIcon>
 									<Box
 										sx={{
-											backgroundColor: "white",
+											backgroundColor: "#f5f5f5",
 											display: "flex",
 											justifyContent: "center",
 											alignItems: "center",
