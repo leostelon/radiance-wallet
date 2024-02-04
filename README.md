@@ -1,7 +1,7 @@
 # Radiance Wallet⛈️
 Radiance Wallet⛈️ is a self-custody _wallet_ that never takes control of your keys. Keys are stored locally on your device, Upgrade your wallet to experience a new level of security, convenience, flexibility and **Savings**! Lightlink ETH while never leaving the app.
 
-![Cover Image](https://i.ibb.co/Xk75Q6f/Mac-Book-Pro-14-7.png)
+![Cover Image](https://i.ibb.co/3kDfy9f/Mac-Book-Pro-14-7.png)
 
 > ⚠️You can try Radiance wallet by running it locally, the app is not intended to be used for mainstream purposes yet, it's still in its early days.⚠️
 
