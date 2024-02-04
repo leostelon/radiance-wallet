@@ -11,6 +11,7 @@ import { VAULT_ADDRESS } from "../constant.js";
 import { useEffect, useState } from "react";
 import { getPrivateKey, getWallet } from "../utils/wallet.js";
 import { toast } from "react-toastify";
+import Frame6 from "../assets/Frame 6.png";
 
 export const Vault = () => {
 	const pieParams = { height: 200, margin: { right: 5 } };
@@ -94,6 +95,10 @@ export const Vault = () => {
 				flexDirection: "column",
 				// height: "100%",
 				p: 2,
+				background: `url('${Frame6}')`,
+				backgroundPosition: "center",
+				backgroundSize: "cover",
+				backgroundRepeat: "no-repeat",
 			}}
 		>
 			<Box

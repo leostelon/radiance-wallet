@@ -55,7 +55,14 @@ export const PayDialog = ({ isOpen, handleExternalClose }) => {
 							setPaymentLoading(false);
 							handleClose();
 							toast("Transaction completed.", { type: "success" });
-							payToVault();
+							chrome.storage.local.get(["savings"], (response) => {
+								if (
+									response.savings === undefined ||
+									response.savings === true
+								) {
+									payToVault();
+								}
+							});
 						})
 						.on("error", (error) => {
 							toast(error.message, { type: "error" });

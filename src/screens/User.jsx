@@ -122,7 +122,7 @@ export const User = () => {
 									navigator.clipboard.writeText(address);
 									setOpen(true);
 								}}
-								style={{ cursor: "pointer" }}
+								style={{ cursor: "pointer", color: "white" }}
 							>
 								{shortText(address)}
 							</h1>
@@ -192,7 +192,7 @@ export const User = () => {
 				</Box>
 				<Box
 					sx={{
-						backgroundColor: "#fde9e9",
+						backgroundColor: "#F3F3F3",
 					}}
 				>
 					{transactions.length === 0 ? (
